@@ -84,7 +84,7 @@ const RegisterFrom = () => {
             )}
           />
 
-          <Button className="w-full font-black text-xl" type="submit">
+          <Button disabled={isPending} className="w-full font-black text-xl" type="submit">
             Submit
           </Button>
         </form>

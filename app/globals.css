@@ -97,3 +97,28 @@ body {
   }
 }
 
+
+/* Custom styles for the player */
+.vjs-big-play-button {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  border-radius: 50% !important;
+  font-size: 3rem !important;
+  height: 4rem !important;
+  width: 4rem !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  line-height: 4rem !important;
+}
+
+.vjs-big-play-button:hover {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+}
+
+.vjs-control-bar {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.vjs-progress-holder {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}

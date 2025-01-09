@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import "videojs-hls-quality-selector";
@@ -24,8 +24,9 @@ interface VideoPageProps {
 const VideoPlayer = ({ videoData }: VideoPageProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const playerRef = useRef<typeof videojs.players | null>(null);
+  const [retry, setRetry] = useState<boolean>(false);
 
-  useEffect(() => {
+  const initializePlayer = () => {
     if (playerRef.current || !videoRef.current) return;
 
     const player = videojs(videoRef.current, {
@@ -119,14 +120,29 @@ const VideoPlayer = ({ videoData }: VideoPageProps) => {
     });
 
     playerRef.current = player;
+  };
+
+  useEffect(() => {
+    // Initialize player when component mounts or when retry is triggered
+    initializePlayer();
+
+    const checkPlayerReady = setInterval(() => {
+      if (playerRef.current?.isReady()) {
+        clearInterval(checkPlayerReady);
+      } else {
+        console.log("Player not ready, retrying...");
+        setRetry((prev) => !prev); // Trigger re-render to retry initialization
+      }
+    }, 2000); // Check every 2 seconds
 
     return () => {
+      clearInterval(checkPlayerReady);
       if (playerRef.current) {
         playerRef.current.dispose();
         playerRef.current = null;
       }
     };
-  }, [videoData]);
+  }, [videoData, retry]); // Re-run on retry
 
   return (
     <div className="video-container">
